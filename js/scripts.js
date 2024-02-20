@@ -38,28 +38,33 @@ function generateHTML(employee) {
   });
   }
 function modalHTML(employee) {
-  const body = document.querySelector('body');
   const modalHTML = `
   <div class="modal-container">
                 <div class="modal">
                     <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
                     <div class="modal-info-container">
-                        <img class="modal-img" src="https://placehold.it/125x125" alt="profile picture">
+                        <img class="modal-img" src=${employee.picture.medium} alt="profile picture">
                         <h3 id="name" class="modal-name cap">${employee.name.first} ${employee.name.last}</h3>
-                        <p class="modal-text">email</p>
-                        <p class="modal-text cap">city</p>
+                        <p class="modal-text">${employee.email}</p>
+                        <p class="modal-text cap">${employee.location.city}</p>
                         <hr>
-                        <p class="modal-text">(555) 555-5555</p>
-                        <p class="modal-text">123 Portland Ave., Portland, OR 97204</p>
-                        <p class="modal-text">Birthday: 10/21/2015</p>
+                        <p class="modal-text">${employee.phone}</p>
+                        <p class="modal-text">${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
+                        <p class="modal-text">Birthday: ${employee.dob.date}</p>
                     </div>
                 </div>
                 `;
     const modalDiv = document.createElement('div');
     modalDiv.innerHTML = modalHTML;
-    body.insertAdjacentHTML('beforeend', modalDiv);
+    gallery.insertAdjacentElement('beforeend', modalDiv);
+    // Add close button listener
+    const closeButton = modalDiv.querySelector('#modal-close-btn');
+    closeButton.addEventListener('click', () => {
+        modalDiv.parentNode.removeChild(modalDiv); // Remove the modal from the DOM
+    });
+
   }
 fetchEmployees();
 
 
-//  Don't use body to select for the modal. Select within the function..
+
