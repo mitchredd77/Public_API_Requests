@@ -29,6 +29,7 @@ addSearchBar()
 // Display employees based on search term
 function displayEmployees(employees) {
   gallery.innerHTML = ''; // Clear the gallery first
+  
   employees.forEach((employee, index) => {
       generateHTML(employee, index);
   });
@@ -57,6 +58,7 @@ function generateHTML(employee, index) {
             <p class="card-text cap">${employee.location.city}, ${employee.location.state}</p>
         </div>
     </div>`;
+    cleanDOB(employee.dob.date);
     const cardDiv = document.createElement('div');
     cardDiv.dataset.index = index;
     cardDiv.innerHTML = employeeHTML;
@@ -70,6 +72,7 @@ function generateHTML(employee, index) {
 // Create modal if employee is clicked. Cycle through next and previous employees
 function modalHTML(employee, index) {
   let currentEmployeeIndex = index; // Initialize the currentEmployeeIndex
+  dob = cleanDOB(employee.dob.date);
   const modalHTML = `
     <div class="modal-container">
         <div class="modal">
@@ -82,7 +85,7 @@ function modalHTML(employee, index) {
                 <hr>
                 <p class="modal-text">${employee.phone}</p>
                 <p class="modal-text">${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}</p>
-                <p class="modal-text">Birthday: ${employee.dob.date}</p>
+                <p class="modal-text">Birthday: ${dob}</p>
             </div>
             <div class="modal-btn-container">
                 <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
@@ -114,8 +117,19 @@ function modalHTML(employee, index) {
       updateModalContent(modalDiv, nextEmployee);
   });
 }
+function cleanDOB (dob) {
+  const dateValue = dob
+  const date = new Date(dateValue)
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
 
+  //Format the date string
+  const cleanDate = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
+  return cleanDate;
+}
 function updateModalContent(modalDiv, employee) {
+  dob = cleanDOB(employee.dob.date);
   const modalText = document.querySelectorAll('.modal-text');
   modalDiv.querySelector('.modal-img').src = employee.picture.medium;
   modalDiv.querySelector('.modal-name').textContent = `${employee.name.first} ${employee.name.last}`;
@@ -123,9 +137,10 @@ function updateModalContent(modalDiv, employee) {
   modalText[1].textContent = `${employee.location.city}`;
   modalText[2].textContent = employee.phone;
   modalText[3].textContent = `${employee.location.street.number} ${employee.location.street.name}, ${employee.location.city}, ${employee.location.state} ${employee.location.postcode}`;
-  modalText[4].textContent = `Birthday: ${employee.dob.date}`;
+  modalText[4].textContent = `Birthday: ${dob}`;
 }
 
 
 // Main content
 fetchEmployees();
+
