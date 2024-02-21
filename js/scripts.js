@@ -22,8 +22,10 @@ function addSearchBar() {
   const search = document.querySelector('.search-container');
   search.insertAdjacentHTML('beforeend', searchBar);
 }
+
 // add search bar to page and select the search input
-addSearchBar();
+addSearchBar()
+
 // Display employees based on search term
 function displayEmployees(employees) {
   gallery.innerHTML = ''; // Clear the gallery first
@@ -35,14 +37,14 @@ function displayEmployees(employees) {
 // Search function for employees
 const searchInput = document.getElementById('search-input');
 searchInput.addEventListener("keyup", (e) => {
-  const searchTerm = e.target.value.toLowerCase(); // Sanitize search term
+  const searchTerm = e.target.value.toLowerCase();
   const filteredEmployees = allEmployees.filter(employee => {
       const fullName = `${employee.name.first} ${employee.name.last}`.toLowerCase();
       return fullName.includes(searchTerm);
   });
   displayEmployees(filteredEmployees);
 });
-
+// Generate HTML with index for Modal functionality
 function generateHTML(employee, index) {
     const employeeHTML = `
     <div class="card">
@@ -65,7 +67,7 @@ function generateHTML(employee, index) {
       modalHTML(employee, index);
   });
 }
-
+// Create modal if employee is clicked. Cycle through next and previous employees
 function modalHTML(employee, index) {
   let currentEmployeeIndex = index; // Initialize the currentEmployeeIndex
   const modalHTML = `
@@ -124,4 +126,6 @@ function updateModalContent(modalDiv, employee) {
   modalText[4].textContent = `Birthday: ${employee.dob.date}`;
 }
 
+
+// Main content
 fetchEmployees();
