@@ -69,9 +69,9 @@ function generateHTML(employee, index) {
       modalHTML(employee, index);
   });
 }
-// Create modal if employee is clicked. Cycle through next and previous employees
+// Create modal if employee card is clicked
 function modalHTML(employee, index) {
-  let currentEmployeeIndex = index; // Initialize the currentEmployeeIndex
+  let currentEmployeeIndex = index; 
   dob = cleanDOB(employee.dob.date);
   const modalHTML = `
     <div class="modal-container">
@@ -97,12 +97,12 @@ function modalHTML(employee, index) {
   const modalDiv = document.createElement('div');
   modalDiv.innerHTML = modalHTML;
   gallery.insertAdjacentElement('beforeend', modalDiv);
-
+// Closes the modal
   const closeButton = modalDiv.querySelector('#modal-close-btn');
   closeButton.addEventListener('click', () => {
       modalDiv.parentNode.removeChild(modalDiv);
   });
-
+// Previous and Next buttons for the modal
   const prevButton = modalDiv.querySelector('#modal-prev');
   prevButton.addEventListener('click', () => {
       currentEmployeeIndex = (currentEmployeeIndex - 1 + allEmployees.length) % allEmployees.length;
@@ -117,6 +117,7 @@ function modalHTML(employee, index) {
       updateModalContent(modalDiv, nextEmployee);
   });
 }
+ //Format the date string to be MM-DD-YYYY
 function cleanDOB (dob) {
   const dateValue = dob
   const date = new Date(dateValue)
@@ -124,10 +125,11 @@ function cleanDOB (dob) {
   const month = date.getMonth() + 1;
   const day = date.getDate();
 
-  //Format the date string
   const cleanDate = `${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}-${year}`;
   return cleanDate;
 }
+
+// Function updates the modal when the user clicks next or previous
 function updateModalContent(modalDiv, employee) {
   dob = cleanDOB(employee.dob.date);
   const modalText = document.querySelectorAll('.modal-text');
